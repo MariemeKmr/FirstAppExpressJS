@@ -1,0 +1,61 @@
+<h2>Liste des abonnés</h2>
+
+<% if (flash) { %>
+  <div class="flash <%= flash.type %>">
+    <%= flash.message %>
+  </div>
+<% } %>
+
+<form method="GET" action="/subscribers">
+  <input
+    type="text"
+    name="q"
+    placeholder="Rechercher par nom ou code postal"
+    value="<%= searchQuery %>"
+    required
+  />
+  <button type="submit" class="btn">Rechercher</button>
+</form>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Email</th>
+      <th>Code Postal</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (subscribers.length === 0) { %>
+      <tr>
+        <td colspan="4">Aucun abonné trouvé.</td>
+      </tr>
+    <% } else { %>
+      <% subscribers.forEach(subscriber => { %>
+        <tr>
+          <td><%= subscriber.name %></td>
+          <td><%= subscriber.email %></td>
+          <td><%= subscriber.zipCode %></td>
+          <td>
+            <!-- Afficher -->
+            <a href="/subscribers/<%= subscriber._id %>" title="Voir" class="btn-action view-btn">Voir</a>
+
+            <!-- Modifier -->
+            <a href="/subscribers/<%= subscriber._id %>/edit" title="Modifier" class="btn-action edit-btn">Modifier</a>
+
+            <!-- Supprimer -->
+            <form action="/subscribers/<%= subscriber._id %>/delete" method="POST" style="display:inline;" onsubmit="return confirm('Confirmer la suppression ?')">
+              <button type="submit" class="btn-action delete-btn">Supprimer</button>
+            </form>            
+          </td>
+        </tr>
+      <% }) %>
+    <% } %>
+  </tbody>
+</table>
+
+<p style="margin-top: 1rem;">
+  <a href="/subscribers/new" class="btn"><i class="fas fa-plus"></i> Créer un nouvel abonné</a>
+</p>

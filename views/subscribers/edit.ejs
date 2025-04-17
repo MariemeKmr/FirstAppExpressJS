@@ -1,0 +1,19 @@
+<h2>Modifier les informations de l'abonné</h2>
+
+<form action="/subscribers/<%= subscriber._id %>/update" method="POST">
+  <div class="form-group">
+    <label for="name">Nom</label>
+    <input type="text" id="name" name="name" value="<%= subscriber.name %>" required>
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" value="<%= subscriber.email %>" required>
+  </div>
+  <div class="form-group">
+    <label for="zipCode">Code Postal</label>
+    <input type="text" id="zipCode" name="zipCode" value="<%= subscriber.zipCode %>">
+  </div>
+  <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 16px; border: none; border-radius: 5px; cursor: pointer;">
+    Mettre à jour
+  </button>
+  </form>
