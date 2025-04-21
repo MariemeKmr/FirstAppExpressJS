@@ -1,0 +1,43 @@
+<h2>Liste des cours</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Titre</th>
+      <th>Description</th>
+      <th>Coût</th>
+      <th>Max Étudiants</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (courses.length === 0) { %>
+      <tr>
+        <td colspan="5">Aucun cours trouvé.</td>
+      </tr>
+    <% } else { %>
+      <% courses.forEach(course => { %>
+        <tr>
+          <td><%= course.title %></td>
+          <td><%= course.description %></td>
+          <td><%= course.cost %> €</td>
+          <td><%= course.maxStudents %></td>
+          <td>
+            <!-- Voir -->
+            <a href="/courses/<%= course._id %>" class="btn-action view-btn">Voir</a>
+
+            <!-- Modifier -->
+            <a href="/courses/<%= course._id %>/edit" class="btn-action edit-btn">Modifier</a>
+
+            <!-- Supprimer -->
+            <form action="/courses/<%= course._id %>/delete?_method=DELETE" method="POST" style="display:inline;" onsubmit="return confirm('Confirmer la suppression ?')">
+              <button type="submit" class="btn-action delete-btn">Supprimer</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    <% } %>
+  </tbody>
+</table>
+
+<a href="/courses/new" class="btn btn-primary" style="margin-top: 1rem;">Créer un nouveau cours</a>
