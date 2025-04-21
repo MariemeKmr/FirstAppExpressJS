@@ -1,0 +1,49 @@
+<h2>Liste des utilisateurs</h2>
+
+<% if (flash) { %>
+  <div class="flash <%= flash.type %>">
+    <%= flash.message %>
+  </div>
+<% } %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Email</th>
+      <th>Code Postal</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (users.length === 0) { %>
+      <tr>
+        <td colspan="4">Aucun utilisateur trouvé.</td>
+      </tr>
+    <% } else { %>
+      <% users.forEach(user => { %>
+        <tr>
+          <td><%= user.fullName %></td>
+          <td><%= user.email %></td>
+          <td><%= user.zipCode %></td>
+          <td>
+            <!-- Voir -->
+            <a href="/users/<%= user._id %>" title="Voir" class="btn-action view-btn">Voir</a>
+
+            <!-- Modifier -->
+            <a href="/users/<%= user._id %>/edit" title="Modifier" class="btn-action edit-btn">Modifier</a>
+
+            <!-- Supprimer -->
+            <form action="/users/<%= user._id %>/delete?_method=DELETE" method="POST" style="display:inline;" onsubmit="return confirm('Confirmer la suppression ?')">
+                <button type="submit" title="Supprimer" class="btn-action delete-btn">Supprimer</button>
+              </form>              
+          </td>
+        </tr>
+      <% }) %>
+    <% } %>
+  </tbody>
+</table>
+
+<p style="margin-top: 1rem;">
+  <a href="/users/new" class="btn"><i class="fas fa-plus"></i> Créer un nouvel utilisateur</a>
+</p>
