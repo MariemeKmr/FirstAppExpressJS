@@ -1,9 +1,4 @@
-<h2>Inscription à la newsletter</h2>
-
-<% if (typeof flash !== "undefined" && flash.type === "error") { %>
-    <div class="flash error"><%= flash.message %></div>
-<% } %>
-  
+<h2>Inscription à la newsletter</h2> 
 
 <form action="/subscribers/create" method="POST">
     <div class="form-group">

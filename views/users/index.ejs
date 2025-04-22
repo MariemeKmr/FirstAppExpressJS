@@ -1,10 +1,12 @@
 <h2>Liste des utilisateurs</h2>
 
-<% if (flash) { %>
-  <div class="flash <%= flash.type %>">
-    <%= flash.message %>
-  </div>
+<% if (flashMessages && flashMessages.success) { %>
+  <div class="alert alert-success"><%= flashMessages.success %></div>
 <% } %>
+<% if (flashMessages && flashMessages.error) { %>
+  <div class="alert alert-danger"><%= flashMessages.error %></div>
+<% } %>
+
 
 <table class="table">
   <thead>

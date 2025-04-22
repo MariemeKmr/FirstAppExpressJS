@@ -1,10 +1,17 @@
 <h2>Liste des abonnés</h2>
 
-<% if (flash) { %>
-  <div class="flash <%= flash.type %>">
-    <%= flash.message %>
+<% if (flashMessages.success) { %>
+  <div class="flash success">
+    <%= flashMessages.success %>
   </div>
 <% } %>
+
+<% if (flashMessages.error) { %>
+  <div class="flash error">
+    <%= flashMessages.error %>
+  </div>
+<% } %>
+
 
 <form method="GET" action="/subscribers">
   <input

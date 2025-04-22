@@ -1,4 +1,5 @@
 const User = require("../models/User");
+
 // Fonction utilitaire pour extraire les paramètres utilisateur du corps de la requête
 const getUserParams = body => {
     return {
@@ -14,21 +15,19 @@ const getUserParams = body => {
 
 module.exports = {
     index: (req, res, next) => {
-        User
-            .find({})
+        User.find({})
             .then(users => {
                 res.locals.users = users;
                 next();
             })
             .catch(error => {
-                console.log(
-                    `Erreur lors de la récupération des utilisateurs: ${error.message}`
-                );
+                console.log(`Erreur lors de la récupération des utilisateurs: ${error.message}`);
                 next(error);
             });
     },
 
     indexView: (req, res) => {
+        console.log("flashMessages:", res.locals.flashMessages); // utile pour debug
         res.render("users/index");
     },
 
@@ -38,8 +37,7 @@ module.exports = {
 
     create: (req, res, next) => {
         let userParams = getUserParams(req.body);
-        User
-            .create(userParams)
+        User.create(userParams)
             .then(user => {
                 res.locals.redirect = "/users";
                 res.locals.user = user;
@@ -54,25 +52,19 @@ module.exports = {
 
     redirectView: (req, res, next) => {
         let redirectPath = res.locals.redirect;
-        if (redirectPath) 
-            res.redirect(redirectPath);
-        else 
-            next();
-        }
-    ,
+        if (redirectPath) res.redirect(redirectPath);
+        else next();
+    },
 
     show: (req, res, next) => {
         let userId = req.params.id;
-        User
-            .findById(userId)
+        User.findById(userId)
             .then(user => {
                 res.locals.user = user;
                 next();
             })
             .catch(error => {
-                console.log(
-                    `Erreur lors de la récupération de l'utilisateur par ID: ${error.message}`
-                );
+                console.log(`Erreur lors de la récupération de l'utilisateur par ID: ${error.message}`);
                 next(error);
             });
     },
@@ -83,15 +75,12 @@ module.exports = {
 
     edit: (req, res, next) => {
         let userId = req.params.id;
-        User
-            .findById(userId)
+        User.findById(userId)
             .then(user => {
-                res.render("users/edit", {user: user});
+                res.render("users/edit", { user: user });
             })
             .catch(error => {
-                console.log(
-                    `Erreur lors de la récupération de l'utilisateur par ID: ${error.message}`
-                );
+                console.log(`Erreur lors de la récupération de l'utilisateur par ID: ${error.message}`);
                 next(error);
             });
     },
@@ -100,32 +89,28 @@ module.exports = {
         let userId = req.params.id,
             userParams = getUserParams(req.body);
 
-        User
-            .findByIdAndUpdate(userId, {$set: userParams})
+        User.findByIdAndUpdate(userId, { $set: userParams })
             .then(user => {
                 res.locals.redirect = `/users/${userId}`;
                 res.locals.user = user;
                 next();
             })
             .catch(error => {
-                console.log(
-                    `Erreur lors de la mise à jour de l'utilisateur par ID: ${error.message}`
-                );
+                console.log(`Erreur lors de la mise à jour de l'utilisateur par ID: ${error.message}`);
                 next(error);
             });
     },
 
     delete: (req, res, next) => {
         const userId = req.params.id;
-        User
-            .findByIdAndDelete(userId)
+        User.findByIdAndDelete(userId)
             .then(() => {
                 res.locals.redirect = "/users";
                 next();
             })
             .catch(error => {
                 console.log(`Erreur lors de la suppression de l'utilisateur par ID: ${error.message}`);
-                next(error); // <-- ajout du paramètre `error` ici pour que le middleware d'erreur le capte
+                next(error);
             });
-    }    
+    }
 };
