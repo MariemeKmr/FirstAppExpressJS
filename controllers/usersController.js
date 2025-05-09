@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const jsonWebToken = require("jsonwebtoken");
+const token_key = process.env.TOKEN_KEY || "secretTokenKey";
 
 // Fonction utilitaire pour extraire les paramètres utilisateur du corps de la requête
 const getUserParams = body => {
@@ -112,5 +114,24 @@ module.exports = {
                 console.log(`Erreur lors de la suppression de l'utilisateur par ID: ${error.message}`);
                 next(error);
             });
+    },
+    
+    getApiToken: (req, res) => {
+      if (req.user) {
+        let signedToken = jsonWebToken.sign(
+          {
+            data: req.user._id,
+            exp: new Date().setDate(new Date().getDate() + 30) // Token valable 30 jours
+          },
+          token_key
+        );
+    
+        res.render("users/api-token", {
+          token: signedToken
+        });
+      } else {
+        req.flash("error", "Vous devez être connecté pour obtenir un token API.");
+        res.redirect("/login");
+      }
     }
 };
